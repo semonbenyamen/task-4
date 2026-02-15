@@ -1,16 +1,15 @@
 //first step
 require("dotenv").config();
 const express = require("express");
+const app = express();
+app.use(express.json());
 const mongoose = require("mongoose");
 
-const app = express();
-const Product = require("./models/Product");
-app.use(express.json());
+const Task = require("./models/Task");
 
-const mongo_url = process.env.DB_URL;
 async function dbconnection() {
     try {
-        await mongoose.connect(mongo_url);
+        await mongoose.connect("mongodb://127.0.0.1:27017/firstApp");
         console.log("MongoDB connected successfully");
     } catch (err) {
         console.error("MongoDB connection error:", err);
@@ -18,11 +17,9 @@ async function dbconnection() {
 }
 dbconnection();
 
-
 app.post("/Product", async(req, res) => {
     try {
-        const {productName, price, category} = req.body;
-
+        const product = await Protact.create (req.body);
         res.status(201).json({
             success: true,
             msg: "Done Created Product",
@@ -33,6 +30,18 @@ app.post("/Product", async(req, res) => {
     }
 });
 
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await Product.find(req.query);
+    res.status(201).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+    } catch (error) {
+   console.log(error);
+  }
+});
 
 
 const port = process.env.PORT || 3000;
