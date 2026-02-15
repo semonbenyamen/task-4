@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 const mongoose = require("mongoose");
 
-const Task = require("./models/Task");
+const product = require("./models/product");
 
 async function dbconnection() {
     try {
@@ -19,7 +19,7 @@ dbconnection();
 
 app.post("/Product", async(req, res) => {
     try {
-        const product = await Protact.create (req.body);
+        const product = await Product.create (req.body);
         res.status(201).json({
             success: true,
             msg: "Done Created Product",
